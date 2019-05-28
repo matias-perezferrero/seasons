@@ -1,17 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
-// const App = () => {
-//   window.navigator.geolocation.getCurrentPosition(
-//     position => {
-//       console.log("hit navigation function position");
-//       console.log(position);
-//     },
-//     err => console.log(err)
-//   );
-
-//   return <div>Latitude: </div>;
-// };
+import SeasonDisplay from "./SeasonDisplay";
+import Spinner from "./Spinner";
 
 class App extends React.Component {
   constructor(props) {
@@ -45,16 +35,24 @@ class App extends React.Component {
     console.log("Component Unmounted");
   }
 
-  render() {
+  renderContent() {
     if (this.state.errorMessage && !this.state.lat) {
       return <div>Error: {this.state.errorMessage}</div>;
     }
 
     if (!this.state.errorMessage && this.state.lat) {
-      return <div>Latitude: {this.state.lat}</div>;
+      return <SeasonDisplay lat={this.state.lat} />;
     }
 
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Spinner message="Finding your location... Make sure you've enabled geolocation!" />
+      </div>
+    );
+  }
+
+  render() {
+    return <div>{this.renderContent()}</div>;
   }
 }
 
